@@ -1,2 +1,2 @@
 # leet-crystal
-leetcode in crystal
+leetcode answers in crystal
