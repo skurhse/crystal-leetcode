@@ -1,1 +1,1 @@
-leetcode answers in crystal 🔮
+https://crystal-lang.org/
