@@ -1,0 +1,58 @@
+#!/usr/bin/env crystal
+# SEE: https://leetcode.com/problems/maximum-depth-of-binary-tree/ <>
+# ..............................................................................
+class TreeNode
+  property value : Int32?
+  property left : Int32?
+  property right : Int32?
+
+  def initialize(*values : Int32?)
+    @value = values[0]
+   
+    init_leaf = proc {|values, order|
+      [values[order]] + values.drop(1 + order * 2).select.with_index {|_, index|
+        [0,3].includes?(index % 4)
+      }.tap {|args| TreeNode.new(args)}
+    } 
+
+    if values.size > 1
+      @left = init_leaf.call(values, 1)
+      if values.size > 3
+        @right = init_leaf.call(values, 2)
+      end
+    end
+  end
+
+  def self.[](*values)
+    return self.new(*values)
+  end
+end
+# ..............................................................................
+def max_depth(root)
+  return root.nil? ? 0 : _max_depth(root, 1)
+end
+
+def _max_depth(node, node_depth)
+  leaf_depth = node_depth + 1
+  
+  if node.left.nil?
+    if node.right.nil?
+      return node_depth
+    else
+      return _max_depth(node.right, leaf_depth)
+    end
+
+  elsif node.right.nil?
+ 
+    return _max_depth(node.left, leaf_depth)
+    
+  else
+    return [
+      _max_depth(node.left, leaf_depth),
+      _max_depth(node.right, leaf_depth)
+    ].max
+  end
+end
+# ..............................................................................
+p! max_depth TreeNode[3,9,20,nil,nil,15,7]
+p! max_depth TreeNode[1,nil,2]
