@@ -3,28 +3,31 @@
 # ..............................................................................
 class TreeNode
   property value : Int32?
-  property left : Int32?
-  property right : Int32?
+  property left : TreeNode?
+  property right : TreeNode?
 
-  def initialize(*values : Int32?)
-    @value = values[0]
-   
-    init_leaf = proc {|values, order|
-      [values[order]] + values.drop(1 + order * 2).select.with_index {|_, index|
-        [0,3].includes?(index % 4)
-      }.tap {|args| TreeNode.new(args)}
-    } 
+  def initialize(values : Array(Int32?))
+    @value = values[0] 
+    return if values.size == 1
 
-    if values.size > 1
-      @left = init_leaf.call(values, 1)
-      if values.size > 3
-        @right = init_leaf.call(values, 2)
+    left_values = [values[1]]
+    right_values = [values[2]]
+    values[3..].each_with_index do |value, index|
+      sub_index = index % 4
+ 
+      if [0,1].includes?(sub_index)
+        left_values.push(value)
+      else
+        right_values.push(value)
       end
     end
+
+    @left = TreeNode.new(left_values)
+    @right = TreeNode.new(right_values)
   end
 
   def self.[](*values)
-    return self.new(*values)
+    return self.new(values.to_a)
   end
 end
 # ..............................................................................
@@ -39,17 +42,17 @@ def _max_depth(node, node_depth)
     if node.right.nil?
       return node_depth
     else
-      return _max_depth(node.right, leaf_depth)
+      return _max_depth(node.right.not_nil!, leaf_depth)
     end
 
   elsif node.right.nil?
  
-    return _max_depth(node.left, leaf_depth)
+    return _max_depth(node.left.not_nil!, leaf_depth)
     
   else
     return [
-      _max_depth(node.left, leaf_depth),
-      _max_depth(node.right, leaf_depth)
+      _max_depth(node.left.not_nil!, leaf_depth),
+      _max_depth(node.right.not_nil!, leaf_depth)
     ].max
   end
 end
