@@ -1,0 +1,32 @@
+#!/usr/bin/env crystal
+# SEE: https://leetcode.com/problems/roman-to-integer/ <>
+# ..............................................................................
+SYMBOLS  = ['I', 'V', 'X', 'L', 'C', 'D',  'M']
+VALUES   = [  1,   5,  10,  50, 100, 500, 1000]
+MAP = SYMBOLS.zip(VALUES).to_h
+
+def roman_to_int(s)
+  int = 0
+
+  i = 0
+  loop do
+    c, d = s[i], s[i+1]
+    i += 1
+   
+    if d && (
+      k = SYMBOLS.find_index(c) + 1
+      d == SYMBOLS[k] || d == SYMBOLS[k+1]
+    )
+      int += MAP[d] - MAP[c] 
+      i += 1
+    else
+      int += MAP[c]
+    end
+   
+    return int if i == s.size 
+  end
+end
+# ..............................................................................
+p! roman_to_int("III")
+p! roman_to_int("LVIII")
+p! roman_to_int("MCMXCIV")
