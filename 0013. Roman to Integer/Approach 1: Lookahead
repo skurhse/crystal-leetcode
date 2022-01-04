@@ -10,12 +10,14 @@ def roman_to_int(s)
 
   i = 0
   loop do
-    c, d = s[i], s[i+1]
+    c = s[i]
     i += 1
    
-    if d && (
+    if i < s.size && (
+      d = s[i]
       k = SYMBOLS.index(c).not_nil! + 1
-      d == SYMBOLS[k] || d == SYMBOLS[k+1]
+      d == (SYMBOLS[k] if k < SYMBOLS.size) ||
+      d == (SYMBOLS[k+1] if k+1 < SYMBOLS.size)
     )
       int += MAP[d] - MAP[c] 
       i += 1
