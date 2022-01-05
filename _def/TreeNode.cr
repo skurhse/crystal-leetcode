@@ -7,6 +7,7 @@ class TreeNode
   property right : TreeNode?
 
   def initialize(values : Array(Int32?))
+    return if values.size == 0
     @value = values[0]
     return if values.size == 1
 
@@ -27,6 +28,10 @@ class TreeNode
   end
 
   def self.[](*values)
-    return self.new(values.to_a)
+    self.new(values.to_a)
+  end
+
+  def self.[]
+    self.new([] of Int32)
   end
 end
