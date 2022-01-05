@@ -1,36 +1,8 @@
 #!/usr/bin/env crystal
 # SEE: https://leetcode.com/problems/maximum-depth-of-binary-tree/ <>
 # ..............................................................................
-class TreeNode
-  property value : Int32?
-  property left : TreeNode?
-  property right : TreeNode?
+require "../_def/TreeNode.cr"
 
-  def initialize(values : Array(Int32?))
-    @value = values[0] 
-    return if values.size == 1
-
-    left_values = [values[1]]
-    right_values = [values[2]]
-    values[3..].each_with_index do |value, index|
-      sub_index = index % 4
- 
-      if [0,1].includes?(sub_index)
-        left_values.push(value)
-      else
-        right_values.push(value)
-      end
-    end
-
-    @left = TreeNode.new(left_values)
-    @right = TreeNode.new(right_values)
-  end
-
-  def self.[](*values)
-    return self.new(values.to_a)
-  end
-end
-# ..............................................................................
 def max_depth(root)
   return root.nil? ? 0 : _max_depth(root, 1)
 end
