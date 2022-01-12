@@ -1,3 +1,5 @@
+# crystal-leetcode 🔮
+
 Links to help you get started:
 - LeetCode:
   - https://leetcode.com/problemset/all/
